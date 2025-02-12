@@ -1,6 +1,7 @@
 import { View, Text, SafeAreaView, TextInput, TouchableOpacity } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { s } from "./styles";
+import { Tarefa } from "../../components/Tarefa";
 
 export default function Home() {
     return (
@@ -42,6 +43,10 @@ export default function Home() {
                     </TouchableOpacity>
                 </View>
             </View>
+
+            <Tarefa conteudo="Teste tarefa" dataCriacao="12/02/2025" />
+
+
         </View>
     )
 }
