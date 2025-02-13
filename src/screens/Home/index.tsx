@@ -11,6 +11,8 @@ export default function Home() {
     const [tarefa, setTarefa] = useState("");
     const [tarefas, setTarefas] = useState<{ conteudo: string, dataCriacao: string }[]>([]);
     const [tarefaCheck, setTarefasCheck] = useState<string[]>([]);
+    const [filtro, setFiltro] = useState<'Todas' | 'Concluídas' | 'Pendentes'>('Todas');
+    const [filtroData, setFiltroData] = useState<string | null>(null);
 
     function handleTarefaAdd() {
         const novaTarefa = { conteudo: tarefa, dataCriacao: new Date().toLocaleDateString() };
@@ -39,8 +41,40 @@ export default function Home() {
         ]);
     }
 
+    function handleTarefaFilterData() {
+        Alert.prompt("Filtrar por Data", "Digite a data desejada no formato DD/MM/AAAA:", [
+            {
+                text: "Filtrar",
+                onPress: (data) => {
+                    if (!data || !data.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+                        Alert.alert("Formato inválido", "Por favor, digite a data no formato correto.");
+                        return;
+                    }
+                    setFiltroData(data);
+                }
+            },
+            { text: "Cancelar", style: "cancel" }
+        ]);
+    }
+
+    function handleTarefaFilter() {
+        Alert.alert("Filtrar Tarefas", "Selecione o tipo de filtro para as suas tarefas:", [
+            { text: "Todas", onPress: () => setFiltro("Todas") },
+            { text: "Concluídas", onPress: () => setFiltro("Concluídas") },
+            { text: "Pendentes", onPress: () => setFiltro("Pendentes") }
+        ]);
+    }
+
+    const tarefasFiltradas = tarefas.filter(tarefa => {
+        if (filtroData && tarefa.dataCriacao !== filtroData) return false;
+        if (filtro === "Todas") return true;
+        if (filtro === "Concluídas") return tarefaCheck.includes(tarefa.conteudo);
+        if (filtro === "Pendentes") return !tarefaCheck.includes(tarefa.conteudo);
+    });
+
     return (
         <View style={s.container}>
+
             <SafeAreaView style={s.form}>
                 <TextInput style={s.input} placeholder='Adicione uma nova tarefa' placeholderTextColor="#6B6B6B" value={tarefa} onChangeText={setTarefa} />
                 <ButtonTarefa onPress={handleTarefaAdd} />
@@ -48,7 +82,7 @@ export default function Home() {
 
             <View style={s.info}>
                 <View style={s.description}>
-                    <ButtonFilter iconName="calendar" onPress={() => { }} />
+                    <ButtonFilter iconName="calendar" onPress={handleTarefaFilterData} />
                 </View>
                 <View style={s.description}>
                     <Text style={s.descriptionText}>Criadas</Text>
@@ -63,12 +97,12 @@ export default function Home() {
                     </View>
                 </View>
                 <View style={s.description}>
-                    <ButtonFilter iconName="filter" onPress={() => { }} />
+                    <ButtonFilter iconName="filter" onPress={handleTarefaFilter} />
                 </View>
             </View>
 
             <FlatList
-                data={tarefas}
+                data={tarefasFiltradas}
                 keyExtractor={tarefa => tarefa.conteudo}
                 renderItem={({ item }) => (
                     <Tarefa
