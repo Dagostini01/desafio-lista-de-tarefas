@@ -6,29 +6,32 @@ import { s } from "./styles";
 type Props = {
     conteudo: string;
     dataCriacao: string;
+    check: boolean;
+    onRemove: () => void;
+    onCheck: () => void;
 }
 
-export function Tarefa({ conteudo, dataCriacao }: Props) {
+export function Tarefa({ conteudo, dataCriacao, onRemove, onCheck, check }: Props) {
     return (
 
         <View>
 
             <View style={s.container}>
 
-                <TouchableOpacity style={s.button}>
-                    <Ionicons name={"ellipse-outline"} size={20} color="#4EA8DE" />
+                <TouchableOpacity style={s.button} onPress={onCheck}>
+                    <Ionicons name={check ? "checkmark-circle" : "ellipse-outline"} size={20} color="#4EA8DE" />
                 </TouchableOpacity>
 
-                <Text style={s.text}>{conteudo}</Text>
+                <Text style={check ? s.text2 : s.text}>{conteudo}</Text>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={onRemove}>
                     <Ionicons style={s.button} name="trash" size={20} color="#808080" />
                 </TouchableOpacity>
 
             </View>
 
             <Text style={s.textData}>Data Criação: {dataCriacao}</Text>
-            
+
         </View>
     )
 }

@@ -19,26 +19,7 @@ export const s = StyleSheet.create({
     padding: 16,
     fontSize: 16,
   },
-  button: {
-    width: 56,
-    height: 56,
-    borderRadius: 5,
-    backgroundColor: "#4EA8DE",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  button2: {
-    width: 28,
-    height: 28,
-    borderRadius: 5,
-    backgroundColor: "#4EA8DE",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  buttonText: {
-    color: "#FFF",
-    fontSize: 24,
-  },
+
   info: {
     width: "100%",
     flexDirection: "row",
