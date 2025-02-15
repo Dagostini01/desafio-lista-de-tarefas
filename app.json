@@ -19,10 +19,24 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.pedrodagostini.desafiolistadetarefas"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.870180552483-9n7dofp08tb8034se0rsi69bun7dmufv"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "62d0b9ef-0ee2-483b-915a-104a41d4a2d8"
+      }
     }
   }
 }

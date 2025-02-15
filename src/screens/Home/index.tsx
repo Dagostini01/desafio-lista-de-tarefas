@@ -5,6 +5,7 @@ import { Tarefa } from "../../components/Tarefa";
 import { useState } from "react";
 import { ButtonTarefa } from "../../components/ButtonTarefa";
 import { ButtonFilter } from "../../components/ButtonFilter";
+import { Header } from "../../components/Header";
 
 export default function Home() {
 
@@ -73,56 +74,66 @@ export default function Home() {
     });
 
     return (
-        <View style={s.container}>
 
-            <SafeAreaView style={s.form}>
-                <TextInput style={s.input} placeholder='Adicione uma nova tarefa' placeholderTextColor="#6B6B6B" value={tarefa} onChangeText={setTarefa} />
-                <ButtonTarefa onPress={handleTarefaAdd} />
+        <View>
+
+            <SafeAreaView>
+                <Header />
             </SafeAreaView>
 
-            <View style={s.info}>
-                <View style={s.description}>
-                    <ButtonFilter iconName="calendar" onPress={handleTarefaFilterData} />
+            <View style={s.container}>
+
+                <View style={s.form}>
+                    <TextInput style={s.input} placeholder='Adicione uma nova tarefa' placeholderTextColor="#6B6B6B" value={tarefa} onChangeText={setTarefa} />
+                    <ButtonTarefa onPress={handleTarefaAdd} />
                 </View>
-                <View style={s.description}>
-                    <Text style={s.descriptionText}>Criadas</Text>
-                    <View style={s.descriptionNumber}>
-                        <Text>{tarefas.length}</Text>
+
+                <View style={s.info}>
+                    <View style={s.description}>
+                        <ButtonFilter iconName="calendar" onPress={handleTarefaFilterData} />
+                    </View>
+                    <View style={s.description}>
+                        <Text style={s.descriptionText}>Criadas</Text>
+                        <View style={s.descriptionNumber}>
+                            <Text>{tarefas.length}</Text>
+                        </View>
+                    </View>
+                    <View style={s.description}>
+                        <Text style={s.descriptionText2}>Concluídas</Text>
+                        <View style={s.descriptionNumber}>
+                            <Text>{tarefaCheck.length}</Text>
+                        </View>
+                    </View>
+                    <View style={s.description}>
+                        <ButtonFilter iconName="filter" onPress={handleTarefaFilter} />
                     </View>
                 </View>
-                <View style={s.description}>
-                    <Text style={s.descriptionText2}>Concluídas</Text>
-                    <View style={s.descriptionNumber}>
-                        <Text>{tarefaCheck.length}</Text>
-                    </View>
-                </View>
-                <View style={s.description}>
-                    <ButtonFilter iconName="filter" onPress={handleTarefaFilter} />
-                </View>
+
+                <FlatList
+                    data={tarefasFiltradas}
+                    keyExtractor={tarefa => tarefa.conteudo}
+                    renderItem={({ item }) => (
+                        <Tarefa
+                            key={item.conteudo}
+                            conteudo={item.conteudo}
+                            dataCriacao={item.dataCriacao}
+                            onRemove={() => handleTarefaRemove(item.conteudo)}
+                            onCheck={() => handleTarefaCheck(item.conteudo)}
+                            check={tarefaCheck.includes(item.conteudo)}
+                        />
+                    )}
+                    ListEmptyComponent={() => (
+                        <View style={s.containerlistEmptyText}>
+                            <Ionicons name="documents-outline" size={100} color="#4EA8DE" />
+                            <Text style={s.listEmptyText1}>Você ainda não tem tarefas cadastradas</Text>
+                            <Text style={s.listEmptyText2}>Crie tarefas e organize seus itens a fazer</Text>
+                        </View>
+                    )}
+                />
+
             </View>
-
-            <FlatList
-                data={tarefasFiltradas}
-                keyExtractor={tarefa => tarefa.conteudo}
-                renderItem={({ item }) => (
-                    <Tarefa
-                        key={item.conteudo}
-                        conteudo={item.conteudo}
-                        dataCriacao={item.dataCriacao}
-                        onRemove={() => handleTarefaRemove(item.conteudo)}
-                        onCheck={() => handleTarefaCheck(item.conteudo)}
-                        check={tarefaCheck.includes(item.conteudo)}
-                    />
-                )}
-                ListEmptyComponent={() => (
-                    <View style={s.containerlistEmptyText}>
-                        <Ionicons name="documents-outline" size={100} color="#4EA8DE" />
-                        <Text style={s.listEmptyText1}>Você ainda não tem tarefas cadastradas</Text>
-                        <Text style={s.listEmptyText2}>Crie tarefas e organize seus itens a fazer</Text>
-                    </View>
-                )}
-            />
-
+            
         </View>
+
     )
 }
