@@ -75,9 +75,9 @@ export default function Home() {
 
     return (
 
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
 
-            <StatusBar barStyle={"light-content"} backgroundColor={"#4EA8DE"}/>
+            <StatusBar barStyle={"light-content"} backgroundColor={"#4EA8DE"} />
 
             <SafeAreaView>
                 <Header />
@@ -135,7 +135,7 @@ export default function Home() {
                 />
 
             </View>
-            
+
         </View>
 
     )

@@ -18,17 +18,19 @@ export const s = StyleSheet.create({
   },
   user: {
     flexDirection: "row",
+    marginLeft: 20,
     gap: 12,
     flexShrink: 1,
+    alignItems: "center",
   },
   image: {
     width: 48,
     height: 48,
     borderRadius: 10,
   },
-  text:{
+  text: {
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
-  }
+  },
 });
