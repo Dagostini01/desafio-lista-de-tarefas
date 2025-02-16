@@ -26,6 +26,7 @@ export const s = StyleSheet.create({
   textData: {
     fontSize: 10,
     color: "#808080",
-    alignSelf: "flex-end"
+    alignSelf: "flex-end",
+    width: 130,
   },
 });

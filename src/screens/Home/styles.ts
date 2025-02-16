@@ -2,8 +2,9 @@ import { StyleSheet } from "react-native";
 
 export const s = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    flex: 1,
     padding: 24,
+    backgroundColor: "#fff",
   },
   form: {
     flexDirection: "row",
@@ -41,6 +42,8 @@ export const s = StyleSheet.create({
     color: "#8284FA",
     fontWeight: "bold",
     marginRight: 5,
+    borderWidth: 1,
+    borderColor: "#fff"
   },
   descriptionNumber: {
     backgroundColor: "#33333333",
@@ -54,12 +57,12 @@ export const s = StyleSheet.create({
     color: "#33333333",
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: 44,
+    fontSize: 40,
   },
   listEmptyText2: {
     color: "#33333333",
     textAlign: "center",
-    fontSize: 30,
+    fontSize: 22,
   },
   containerlistEmptyText: {
     marginTop: 100,

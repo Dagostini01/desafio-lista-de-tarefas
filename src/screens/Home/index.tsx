@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, TextInput, TouchableOpacity, Alert, FlatList } from "react-native";
+import { View, Text, SafeAreaView, TextInput, TouchableOpacity, Alert, FlatList, StatusBar } from "react-native";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { s } from "./styles";
 import { Tarefa } from "../../components/Tarefa";
@@ -75,7 +75,9 @@ export default function Home() {
 
     return (
 
-        <View>
+        <View style={{flex: 1}}>
+
+            <StatusBar barStyle={"light-content"} backgroundColor={"#4EA8DE"}/>
 
             <SafeAreaView>
                 <Header />
@@ -112,6 +114,7 @@ export default function Home() {
                 <FlatList
                     data={tarefasFiltradas}
                     keyExtractor={tarefa => tarefa.conteudo}
+                    showsVerticalScrollIndicator={false}
                     renderItem={({ item }) => (
                         <Tarefa
                             key={item.conteudo}

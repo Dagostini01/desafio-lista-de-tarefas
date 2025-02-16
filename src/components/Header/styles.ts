@@ -26,4 +26,9 @@ export const s = StyleSheet.create({
     height: 48,
     borderRadius: 10,
   },
+  text:{
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  }
 });

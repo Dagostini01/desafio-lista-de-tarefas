@@ -1,4 +1,6 @@
 import { View, Text } from "react-native";
+import { s } from "./styles";
+
 import {
     GoogleSignin,
     GoogleSigninButton,
@@ -18,8 +20,8 @@ GoogleSignin.configure({
 export function Login() {
 
     return (
-        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <Text>Login com o google</Text>
+        <View style={s.container}>
+            <Text style={s.text}>Realize o login com sua conta abaixo:</Text>
             <GoogleSigninButton onPress={signIn} size={GoogleSigninButton.Size.Wide} color={GoogleSigninButton.Color.Light}/>
         </View>
     )
