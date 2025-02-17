@@ -3,12 +3,13 @@ import { s } from "./styles";
 
 type Props = {
     onPress: () => void;
+    testID?: string;
 }
 
-export function ButtonTarefa({ onPress }: Props) {
+export function ButtonTarefa({ onPress, testID }: Props) {
     return (
         <View>
-            <TouchableOpacity style={s.button} onPress={onPress}>
+            <TouchableOpacity style={s.button} onPress={onPress} testID={testID}>
                 <View>
                     <Text style={s.buttonText}>+</Text>
                 </View>

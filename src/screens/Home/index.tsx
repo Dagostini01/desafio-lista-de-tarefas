@@ -149,7 +149,7 @@ export default function Home() {
                         value={tarefa}
                         onChangeText={setTarefa}
                     />
-                    <ButtonTarefa onPress={handleTarefaAdd} />
+                    <ButtonTarefa testID="botao-adicionar" onPress={handleTarefaAdd} />
                 </View>
 
                 <View style={s.info}>
