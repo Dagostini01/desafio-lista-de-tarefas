@@ -84,10 +84,15 @@ export default function Home() {
 
     function handleTarefaFilterData() {
         if (Platform.OS === "ios") {
-            Alert.prompt("Filtrar por Data", "Digite a data desejada no formato DD/MM/AAAA:", [
+            Alert.prompt("Filtrar por Data", "Digite a data desejada no formato DD/MM/AAAA (ou deixe em branco para exibir todas):", [
                 {
                     text: "Filtrar",
                     onPress: (data) => handleValidaFilter(data)
+                },
+                {
+                    text: "Limpar Filtro",
+                    onPress: () => setFiltroData(null), // Define null para exibir todas as tarefas
+                    style: "destructive"
                 },
                 { text: "Cancelar", style: "cancel" }
             ]);
@@ -95,6 +100,7 @@ export default function Home() {
             setModalVisible(true);
         }
     }
+
 
     function handleValidaFilter(data: string | undefined) {
         if (!data || !data.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
@@ -206,6 +212,12 @@ export default function Home() {
                         />
                         <TouchableOpacity onPress={() => handleValidaFilter(inputData)}>
                             <Text style={s.modalText}>Filtrar!!</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => {
+                            setFiltroData(null);
+                            setModalVisible(false);
+                        }}>
+                            <Text style={[s.modalText, { color: "red" }]}>Limpar Filtro</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
