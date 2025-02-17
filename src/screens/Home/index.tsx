@@ -1,11 +1,13 @@
-import { View, Text, SafeAreaView, TextInput, TouchableOpacity, Alert, FlatList, StatusBar } from "react-native";
-import Ionicons from '@expo/vector-icons/Ionicons';
+import {
+    View, Text, SafeAreaView, TextInput, TouchableOpacity, Alert, FlatList, StatusBar, Modal, Platform
+} from "react-native";
 import { s } from "./styles";
 import { Tarefa } from "../../components/Tarefa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ButtonTarefa } from "../../components/ButtonTarefa";
 import { ButtonFilter } from "../../components/ButtonFilter";
 import { Header } from "../../components/Header";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home() {
 
@@ -15,7 +17,45 @@ export default function Home() {
     const [filtro, setFiltro] = useState<'Todas' | 'Concluídas' | 'Pendentes'>('Todas');
     const [filtroData, setFiltroData] = useState<string | null>(null);
 
+    // Estado para modal no Android
+    const [modalVisible, setModalVisible] = useState(false);
+    const [inputData, setInputData] = useState("");
+
+    useEffect(() => {
+        const loadTarefas = async () => {
+            try {
+                const storedTarefas = await AsyncStorage.getItem("tarefas");
+                const storedTarefasCheck = await AsyncStorage.getItem("tarefasCheck");
+
+                if (storedTarefas) setTarefas(JSON.parse(storedTarefas));
+                if (storedTarefasCheck) setTarefasCheck(JSON.parse(storedTarefasCheck));
+            } catch (error) {
+                console.error("Erro ao carregar tarefas do AsyncStorage:", error);
+            }
+        };
+
+        loadTarefas();
+    }, []);
+
+    useEffect(() => {
+        const saveTarefas = async () => {
+            try {
+                await AsyncStorage.setItem("tarefas", JSON.stringify(tarefas));
+                await AsyncStorage.setItem("tarefasCheck", JSON.stringify(tarefaCheck));
+            } catch (error) {
+                console.error("Erro ao salvar tarefas no AsyncStorage:", error);
+            }
+        };
+
+        saveTarefas();
+    }, [tarefas, tarefaCheck]);
+
     function handleTarefaAdd() {
+        if (!tarefa.trim()) {
+            Alert.alert("Erro", "A tarefa não pode estar vazia.");
+            return;
+        }
+
         const novaTarefa = { conteudo: tarefa, dataCriacao: new Date().toLocaleDateString() };
         setTarefas(prevState => [...prevState, novaTarefa]);
         setTarefa("");
@@ -27,7 +67,7 @@ export default function Home() {
                 text: "Sim",
                 onPress: () => {
                     setTarefas(prevState => prevState.filter(t => t.conteudo !== value));
-                    setTarefasCheck(prevState => prevState.filter(tarefaCheck => tarefaCheck !== value))
+                    setTarefasCheck(prevState => prevState.filter(tarefaCheck => tarefaCheck !== value));
                 }
             },
             { text: "Não", style: 'cancel' }
@@ -43,19 +83,26 @@ export default function Home() {
     }
 
     function handleTarefaFilterData() {
-        Alert.prompt("Filtrar por Data", "Digite a data desejada no formato DD/MM/AAAA:", [
-            {
-                text: "Filtrar",
-                onPress: (data) => {
-                    if (!data || !data.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
-                        Alert.alert("Formato inválido", "Por favor, digite a data no formato correto.");
-                        return;
-                    }
-                    setFiltroData(data);
-                }
-            },
-            { text: "Cancelar", style: "cancel" }
-        ]);
+        if (Platform.OS === "ios") {
+            Alert.prompt("Filtrar por Data", "Digite a data desejada no formato DD/MM/AAAA:", [
+                {
+                    text: "Filtrar",
+                    onPress: (data) => handleValidaFilter(data)
+                },
+                { text: "Cancelar", style: "cancel" }
+            ]);
+        } else {
+            setModalVisible(true);
+        }
+    }
+
+    function handleValidaFilter(data: string | undefined) {
+        if (!data || !data.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+            Alert.alert("Formato inválido", "Por favor, digite a data no formato correto.");
+            return;
+        }
+        setFiltroData(data);
+        setModalVisible(false);
     }
 
     function handleTarefaFilter() {
@@ -73,10 +120,19 @@ export default function Home() {
         if (filtro === "Pendentes") return !tarefaCheck.includes(tarefa.conteudo);
     });
 
+    function formatarData(text: string) {
+        let cleaned = text.replace(/\D/g, '');
+        if (cleaned.length > 2 && cleaned.length <= 4) {
+            cleaned = cleaned.replace(/(\d{2})(\d{1,2})/, '$1/$2');
+        } else if (cleaned.length > 4) {
+            cleaned = cleaned.replace(/(\d{2})(\d{2})(\d{1,4})/, '$1/$2/$3');
+        }
+        setInputData(cleaned);
+    }
+
+
     return (
-
         <View style={{ flex: 1 }}>
-
             <StatusBar barStyle={"light-content"} backgroundColor={"#4EA8DE"} />
 
             <SafeAreaView>
@@ -86,7 +142,13 @@ export default function Home() {
             <View style={s.container}>
 
                 <View style={s.form}>
-                    <TextInput style={s.input} placeholder='Adicione uma nova tarefa' placeholderTextColor="#6B6B6B" value={tarefa} onChangeText={setTarefa} />
+                    <TextInput
+                        style={s.input}
+                        placeholder='Adicione uma nova tarefa'
+                        placeholderTextColor="#6B6B6B"
+                        value={tarefa}
+                        onChangeText={setTarefa}
+                    />
                     <ButtonTarefa onPress={handleTarefaAdd} />
                 </View>
 
@@ -125,18 +187,29 @@ export default function Home() {
                             check={tarefaCheck.includes(item.conteudo)}
                         />
                     )}
-                    ListEmptyComponent={() => (
-                        <View style={s.containerlistEmptyText}>
-                            <Ionicons name="documents-outline" size={100} color="#4EA8DE" />
-                            <Text style={s.listEmptyText1}>Você ainda não tem tarefas cadastradas</Text>
-                            <Text style={s.listEmptyText2}>Crie tarefas e organize seus itens a fazer</Text>
-                        </View>
-                    )}
                 />
-
             </View>
 
+            {/* Modal Android */}
+            <Modal visible={modalVisible} transparent={true} animationType="slide">
+                <View style={s.modalContainer}>
+                    <View style={s.modalContent}>
+                        <Text style={s.modalText}>Digite a data:</Text>
+                        <TextInput
+                            style={s.modalInput}
+                            placeholder="DD/MM/AAAA"
+                            placeholderTextColor="#fff"
+                            keyboardType="numeric"
+                            value={inputData}
+                            onChangeText={formatarData}
+                            maxLength={10}
+                        />
+                        <TouchableOpacity onPress={() => handleValidaFilter(inputData)}>
+                            <Text style={s.modalText}>Filtrar!!</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </View>
-
-    )
+    );
 }

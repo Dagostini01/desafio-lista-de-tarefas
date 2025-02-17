@@ -13,7 +13,7 @@ export const signIn = async (): Promise<User["user"] | null> => {
     console.log("User Info: ", response);
 
     if (isSuccessResponse(response)) {
-      return response.data.user; // Retorna APENAS os dados do usuário
+      return response.data.user;
     }
     return null;
   } catch (error) {

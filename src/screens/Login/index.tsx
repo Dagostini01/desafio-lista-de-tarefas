@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { View, Text, Alert } from "react-native";
+import { View, Text, Alert, StatusBar } from "react-native";
 import { GoogleSignin, GoogleSigninButton } from "@react-native-google-signin/google-signin";
 import { signIn } from "../../comps/signin";
 import { s } from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../routes/routes"; // Importando a tipagem correta
+import { RootStackParamList } from "../../routes/routes";
 
 export function Login() {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList, "Login">>();
@@ -35,6 +35,7 @@ export function Login() {
 
   return (
     <View style={s.container}>
+      <StatusBar barStyle={"light-content"} backgroundColor={"#4EA8DE"} />
       <Text style={s.text}>Realize o login com sua conta abaixo:</Text>
       <GoogleSigninButton onPress={handleLogin} size={GoogleSigninButton.Size.Wide} color={GoogleSigninButton.Color.Light} />
     </View>

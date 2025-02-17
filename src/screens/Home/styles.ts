@@ -43,7 +43,7 @@ export const s = StyleSheet.create({
     fontWeight: "bold",
     marginRight: 5,
     borderWidth: 1,
-    borderColor: "#fff"
+    borderColor: "#fff",
   },
   descriptionNumber: {
     backgroundColor: "#33333333",
@@ -67,5 +67,58 @@ export const s = StyleSheet.create({
   containerlistEmptyText: {
     marginTop: 100,
     alignItems: "center",
+  },
+  /*** Estilos do Modal para Android ***/
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // Fundo escuro para o efeito de sobreposição
+  },
+  modalContent: {
+    backgroundColor: "#4EA8DE",
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+    alignItems: "center",
+  },
+  modalInput: {
+    width: "100%",
+    borderWidth: 4,
+    borderColor: "#fff",
+    borderRadius: 5,
+    padding: 10,
+    marginTop: 10,
+    marginBottom: 10,
+    fontSize: 16,
+    textAlign: "center",
+  },
+  modalButton: {
+    backgroundColor: "#4EA8DE",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+    width: "100%",
+    alignItems: "center",
+  },
+  modalButtonText: {
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  modalCancelButton: {
+    marginTop: 10,
+  },
+  modalCancelText: {
+    color: "red",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  modalText: {
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 16,
+    width: "100%",
+    textAlign: "center",
   },
 });
