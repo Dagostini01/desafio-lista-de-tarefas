@@ -134,5 +134,5 @@ jest.mock('@react-native-google-signin/google-signin', () => ({
 ---
 
 ## 📌 Link vídeo do projeto rodando:
- 
+ https://drive.google.com/file/d/1ZewBwyEP3yrzSCeK8GYjSaSrJNGE6ZvY/view?usp=sharing
 
